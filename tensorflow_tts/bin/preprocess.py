@@ -74,7 +74,7 @@ def parse_and_config():
         "--dataset",
         type=str,
         default="ljspeech",
-        choices=["ljspeech", "kss", "libritts", "baker", "thorsten"],
+        choices=["ljspeech", "kss", "libritts", "baker", "thorsten", "estonian"],
         help="Dataset to preprocess.",
     )
     parser.add_argument(
@@ -194,7 +194,7 @@ def gen_audio_features(item, config):
     # check audio properties
     assert len(audio.shape) == 1, f"{utt_id} seems to be multi-channel signal."
     assert np.abs(audio).max() <= 1.0, f"{utt_id} is different from 16 bit PCM."
-    
+
     # check sample rate
     if rate != config["sampling_rate"]:
         audio = librosa.resample(audio, rate, config["sampling_rate"])
@@ -384,7 +384,7 @@ def preprocess():
     )
 
     # check output directories
-    build_dir = lambda x: [
+    def build_dir(x): return [
         os.makedirs(os.path.join(config["outdir"], x, y), exist_ok=True)
         for y in ["raw-feats", "wavs", "ids", "raw-f0", "raw-energies"]
     ]
@@ -418,7 +418,7 @@ def preprocess():
     logging.info(f"Training items: {len(train_split)}")
     logging.info(f"Validation items: {len(valid_split)}")
 
-    get_utt_id = lambda x: os.path.split(x[1])[-1].split(".")[0]
+    def get_utt_id(x): return os.path.split(x[1])[-1].split(".")[0]
     train_utt_ids = [get_utt_id(x) for x in train_split]
     valid_utt_ids = [get_utt_id(x) for x in valid_split]
 
@@ -545,7 +545,7 @@ def compute_statistics():
     config = parse_and_config()
 
     # find features files for the train split
-    glob_fn = lambda x: glob.glob(os.path.join(config["rootdir"], "train", x, "*.npy"))
+    def glob_fn(x): return glob.glob(os.path.join(config["rootdir"], "train", x, "*.npy"))
     glob_mel = glob_fn("raw-feats")
     glob_f0 = glob_fn("raw-f0")
     glob_energy = glob_fn("raw-energies")
