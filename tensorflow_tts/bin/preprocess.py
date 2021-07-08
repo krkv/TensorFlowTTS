@@ -18,6 +18,7 @@ import argparse
 import glob
 import logging
 import os
+from tensorflow_tts.processor.estonian import ESTONIAN_SYMBOLS
 import yaml
 
 import librosa
@@ -35,12 +36,14 @@ from tensorflow_tts.processor import BakerProcessor
 from tensorflow_tts.processor import KSSProcessor
 from tensorflow_tts.processor import LibriTTSProcessor
 from tensorflow_tts.processor import ThorstenProcessor
+from tensorflow_tts.processor import EstonianProcessor
 
 from tensorflow_tts.processor.ljspeech import LJSPEECH_SYMBOLS
 from tensorflow_tts.processor.baker import BAKER_SYMBOLS
 from tensorflow_tts.processor.kss import KSS_SYMBOLS
 from tensorflow_tts.processor.libritts import LIBRITTS_SYMBOLS
 from tensorflow_tts.processor.thorsten import THORSTEN_SYMBOLS
+from tensorflow_tts.processor.estonian import ESTONIAN_SYMBOLS
 
 from tensorflow_tts.utils import remove_outlier
 
@@ -352,6 +355,7 @@ def preprocess():
         "libritts": LibriTTSProcessor,
         "baker": BakerProcessor,
         "thorsten": ThorstenProcessor,
+        "estonian": EstonianProcessor
     }
 
     dataset_symbol = {
@@ -360,6 +364,7 @@ def preprocess():
         "libritts": LIBRITTS_SYMBOLS,
         "baker": BAKER_SYMBOLS,
         "thorsten": THORSTEN_SYMBOLS,
+        "estonian": ESTONIAN_SYMBOLS
     }
 
     dataset_cleaner = {
@@ -368,6 +373,7 @@ def preprocess():
         "libritts": None,
         "baker": None,
         "thorsten": "german_cleaners",
+        "estonian": "transliteration_cleaners"
     }
 
     logging.info(f"Selected '{config['dataset']}' processor.")
