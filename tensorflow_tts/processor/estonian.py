@@ -48,7 +48,7 @@ class EstonianProcessor(BaseProcessor):
         "wave_file": 0,
         "text_norm": 1,
     }
-    train_f_name: str = "metadata.csv"
+    train_f_name: str = "sentences.csv"
 
     def create_items(self):
         if self.data_dir:
@@ -61,7 +61,7 @@ class EstonianProcessor(BaseProcessor):
         parts = line.strip().split(split)
         wave_file = parts[self.positions["wave_file"]]
         text_norm = parts[self.positions["text_norm"]]
-        wav_path = os.path.join(data_dir, "wavs", f"{wave_file}.wav")
+        wav_path = os.path.join(data_dir, f"{wave_file}")
         speaker_name = "kylli"
         return text_norm, wav_path, speaker_name
 
